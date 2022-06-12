@@ -13,4 +13,8 @@
       <PackageReference Include="DSharpPlus.Interactivity" Version="4.3.0-nightly-01142" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="config.json" />
+    </ItemGroup>
+
 </Project>

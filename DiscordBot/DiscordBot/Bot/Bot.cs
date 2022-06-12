@@ -1,6 +1,7 @@
 using System.Text;
 using DiscordBot.Model;
 using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ namespace DiscordBot.Bot;
 public class Bot
 {
     public DiscordClient Client { get; set; }
-
+    public CommandsNextExtension Commands { get; set; }
     public async Task RunAsyc()
     {
         var config = string.Empty;
@@ -35,11 +36,22 @@ public class Bot
 
         Client.Ready += OnClientReady;
 
-        await Task.Delay(1);
+        var commandsConfig = new CommandsNextConfiguration
+        {
+            StringPrefixes = new[] {configObject.Prefix},
+            EnableMentionPrefix = true,
+            EnableDms = false
+        };
+
+        Commands = Client.UseCommandsNext(commandsConfig);
+        
+        await Client.ConnectAsync();
+        
+        await Task.Delay(-1);
     }
 
     private Task OnClientReady(DiscordClient client, ReadyEventArgs e)
     {
-        return null;
+        return Task.CompletedTask;
     }
 }
